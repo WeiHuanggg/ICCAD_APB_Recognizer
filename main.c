@@ -76,12 +76,28 @@ int get_completer_id(const char* addr) {
 
 int main(int argc, char* argv[]) {
     clock_t start = clock();
-    if (argc < 4 || strcmp(argv[2], "-o") != 0) {
+    
+    char output_filename[256];
+    
+    if (argc == 2) {
+        // 方式1：自動命名 - ./APB_Recognizer dump1.vcd
+        strcpy(output_filename, argv[1]);
+        char* dot = strrchr(output_filename, '.');
+        if (dot && strcmp(dot, ".vcd") == 0) {
+            strcpy(dot, ".txt");
+        } else {
+            strcat(output_filename, ".txt");
+        }
+    } else if (argc == 4 && strcmp(argv[2], "-o") == 0) {
+        // 方式2：手動指定 - ./APB_Recognizer dump1.vcd -o dump1.txt
+        strcpy(output_filename, argv[3]);
+    } else {
         return 1;
     }
+    
     init_symbol_map();
     FILE* fin = fopen(argv[1], "r");
-    FILE* fresult = fopen(argv[3], "w");
+    FILE* fresult = fopen(output_filename, "w");
     if (!fin || !fresult) {
         return 1;
     }
