@@ -22,17 +22,17 @@
 目前測試結果：
 - 輸入: dump00.vcd (pulpino_public_testcase3.vcd)
 - 輸出: dump00.txt  
-Number of Read Transactions with no wait states: 300
-Number of Read Transactions with wait states: 0
-Number of Write Transactions with no wait states: 606
-Number of Write Transactions with wait states: 0
-Average Read Cycle: 2.00 cycles
-Average Write Cycle: 2.00 cycles
-Bus Utilization: 34.12%
-Number of Idle Cycles: 3498
-Number of Requester: 1
-Number of Completer: 1
-CPU Elapsed Time: 9.00 ms
+Number of Read Transactions with no wait states: 300  
+Number of Read Transactions with wait states: 0  
+Number of Write Transactions with no wait states: 606  
+Number of Write Transactions with wait states: 0  
+Average Read Cycle: 2.00 cycles  
+Average Write Cycle: 2.00 cycles  
+Bus Utilization: 34.12%  
+Number of Idle Cycles: 3498  
+Number of Requester: 1  
+Number of Completer: 1  
+CPU Elapsed Time: 9.00 ms  
 
 ## 備註
 會繼續用branch對程式做測試，有確定的變更會merge到main branch
