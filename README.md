@@ -9,7 +9,7 @@
 - Requester & Completer辨識（第三部分）
 
 ## 未完成 
-- Completer 錯誤類型分析（算第三還是第四部份？）
+- Completer 錯誤類型分析（算第三還是第四部分？）
 - APB 錯誤檢測（第四部份）
 
 ## 使用方式
