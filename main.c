@@ -32,8 +32,7 @@ int init_symbol_map() {
 }
 
 void update_value(const char* symbol, const char* value) {
-    int i;
-    for (i = 0; i < symbol_count; i++) {
+    for (int i = 0; i < symbol_count; i++) {
         if (strcmp(symbol_list[i], symbol) == 0) {
             strcpy(signal_values[i], value);
             return;
@@ -45,8 +44,7 @@ void update_value(const char* symbol, const char* value) {
 }
 
 int get_symbol_index(char symbol) {
-    int i;
-    for (i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
         if (symbol_map[i][0] == symbol) return i;
     }
     return -1;
@@ -54,8 +52,7 @@ int get_symbol_index(char symbol) {
 
 const char* get_value_by_index(int idx) {
     char symbol = symbol_map[idx][0];
-    int i;
-    for (i = 0; i < symbol_count; i++) {
+    for (int i = 0; i < symbol_count; i++) {
         if (symbol_list[i][0] == symbol) {
             return signal_values[i];
         }
@@ -131,8 +128,7 @@ int main(int argc, char* argv[]) {
     while (fgets(line, sizeof(line), fin)) {
         if (line[0] == '#') {
             current_time = atoi(&line[1]);
-            int i;
-            for (i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 const char* v = get_value_by_index(i);
                 strncpy(prev_signal_values[i], v, MAX_LINE_LEN);
             }
@@ -220,8 +216,7 @@ int main(int argc, char* argv[]) {
     fclose(fin);
 
     // 統計分析
-    int i;
-    for (i = 0; i < txn_count; i++) {
+    for (int i = 0; i < txn_count; i++) {
         int start_time = transactions[i].start_time;
         int end_time = transactions[i].end_time;
         int wait_states = transactions[i].wait_states;
