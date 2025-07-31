@@ -21,7 +21,7 @@
 ```
 目前測試結果：
 - 輸入: dump00.vcd (pulpino_public_testcase3.vcd)
-- 輸出: dump00.txt
+- 輸出: dump00.txt  
 Number of Read Transactions with no wait states: 300
 Number of Read Transactions with wait states: 0
 Number of Write Transactions with no wait states: 606
