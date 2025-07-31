@@ -4,13 +4,13 @@
 - 整合前: 1, 2, 3部分合併前檔案（parser, analyzer）
 
 ## 已完成
-- APB 交易辨識
-- APB Bus 行為分析
-- Requester & Completer辨識
+- APB 交易辨識（第一部分）
+- APB Bus 行為分析（第二部分）
+- Requester & Completer辨識（第三部分）
 
 ## 未完成 
-- Completer 錯誤類型分析（？
-- APB 錯誤檢測
+- Completer 錯誤類型分析（算第三還是第四部份？）
+- APB 錯誤檢測（第四部份）
 
 ## 使用方式
 ```bash
