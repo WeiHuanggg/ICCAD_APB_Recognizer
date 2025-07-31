@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdlib.h>
 #include <time.h>
+
 #define MAX_SYMBOLS 1024
 #define MAX_LINE_LEN 1024
 
@@ -20,25 +20,14 @@ int symbol_count = 0;
 // 新增：前一個時間點的訊號值
 char prev_signal_values[6][MAX_LINE_LEN] = {"x","x","x","x","x","x"};
 
-// 讀取 symbol_map.txt
-int load_symbol_map(const char* filename) {
-    FILE* fp = fopen(filename, "r");
-    if (!fp) {
-        return 0;
-    }
-    char line[128];
-    while (fgets(line, sizeof(line), fp)) {
-        char key[32], value;
-        if (sscanf(line, "%[^=]=%c", key, &value) == 2) {
-            if (strcmp(key, "PADDR") == 0) symbol_map[IDX_PADDR][0] = value;
-            else if (strcmp(key, "PWDATA") == 0) symbol_map[IDX_PWDATA][0] = value;
-            else if (strcmp(key, "PWRITE") == 0) symbol_map[IDX_PWRITE][0] = value;
-            else if (strcmp(key, "PSEL") == 0) symbol_map[IDX_PSEL][0] = value;
-            else if (strcmp(key, "PENABLE") == 0) symbol_map[IDX_PENABLE][0] = value;
-            else if (strcmp(key, "PREADY") == 0) symbol_map[IDX_PREADY][0] = value;
-        }
-    }
-    fclose(fp);
+// 初始化 symbol map（直接寫在程式裡）
+int init_symbol_map() {
+    symbol_map[IDX_PADDR][0] = '%';
+    symbol_map[IDX_PWDATA][0] = '&';
+    symbol_map[IDX_PWRITE][0] = '\'';
+    symbol_map[IDX_PSEL][0] = '(';
+    symbol_map[IDX_PENABLE][0] = ')';
+    symbol_map[IDX_PREADY][0] = '*';
     return 1;
 }
 
@@ -87,14 +76,12 @@ int get_completer_id(const char* addr) {
 
 int main(int argc, char* argv[]) {
     clock_t start = clock();
-    if (argc < 2) {
+    if (argc < 4 || strcmp(argv[2], "-o") != 0) {
         return 1;
     }
-    if (!load_symbol_map("symbol_map.txt")) {
-        return 1;
-    }
+    init_symbol_map();
     FILE* fin = fopen(argv[1], "r");
-    FILE* fresult = fopen("result.txt", "w");
+    FILE* fresult = fopen(argv[3], "w");
     if (!fin || !fresult) {
         return 1;
     }
@@ -245,7 +232,7 @@ int main(int argc, char* argv[]) {
     double bus_utilization = (double)total_cycles_used / total_simulation_cycles * 100.0;
     clock_t end = clock();
     double elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-    // 輸出到result.txt
+    // 輸出到指定的輸出檔案
     fprintf(fresult, "Number of Read Transactions with no wait states: %d\n", read_no_wait);
     fprintf(fresult, "Number of Read Transactions with wait states: %d\n", read_with_wait);
     fprintf(fresult, "Number of Write Transactions with no wait states: %d\n", write_no_wait);
