@@ -32,7 +32,7 @@ int init_symbol_map() {
 }
 
 void update_value(const char* symbol, const char* value) {
-    int i;
+    for (int i = 0; i < symbol_cou    int i;
     for (i = 0; i < symbol_count; i++) {
         if (strcmp(symbol_list[i], symbol) == 0) {
             strcpy(signal_values[i], value);
@@ -220,19 +220,47 @@ int main(int argc, char* argv[]) {
     fclose(fin);
 
     // 統計分析
+    int unique_requesters[100] = {0};
+    int unique_completers[100] = {0};
+    int req_count = 0, comp_count = 0;
+    
     int i;
     for (i = 0; i < txn_count; i++) {
-        int start_time = transactions[i].start_time;
-        int end_time = transactions[i].end_time;
-        int wait_states = transactions[i].wait_states;
-        char* type = transactions[i].type;
-        if (end_time > last_time) last_time = end_time;
+e > last_time) last_time = end_time;
         int transaction_cycles = (end_time - start_time) / 5000;
         total_cycles_used += transaction_cycles;
         if (strcmp(type, "READ") == 0) {
+        int req_id = transactions[i].req_id;
+        int comp_id = transactions[i].comp_id;
+        
             if (wait_states == 0) {
                 read_no_wait++;
             } else {
+        
+        // 統計 Requester
+        int req_found = 0;
+        for (int j = 0; j < req_count; j++) {
+            if (unique_requesters[j] == req_id) {
+                req_found = 1;
+                break;
+            }
+        }
+        if (!req_found) {
+            unique_requesters[req_count++] = req_id;
+        }
+        
+        // 統計 Completer
+        int comp_found = 0;
+        for (int j = 0; j < comp_count; j++) {
+            if (unique_completers[j] == comp_id) {
+                comp_found = 1;
+                break;
+            }
+        }
+        if (!comp_found) {
+            unique_completers[comp_count++] = comp_id;
+        }
+        
                 read_with_wait++;
             }
             read_cycles += transaction_cycles;
@@ -262,9 +290,8 @@ int main(int argc, char* argv[]) {
     fprintf(fresult, "Average Write Cycle: %.2f cycles\n", avg_write_cycle);
     fprintf(fresult, "Bus Utilization: %.2f%%\n", bus_utilization);
     fprintf(fresult, "Number of Idle Cycles: %d\n", idle_cycles);
-    fprintf(fresult, "Number of Completer: 1\n");
+    fprintf(fresult, "Number of Requester: %d\n", req_count);
+    fprintf(fresult, "Number of Completer: %d\n", comp_count);
     fprintf(fresult, "CPU Elapsed Time: %.2f ms\n", elapsed_ms);
     fclose(fresult);
     return 0;
-}
-
