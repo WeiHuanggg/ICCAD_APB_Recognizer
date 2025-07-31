@@ -32,8 +32,7 @@ int init_symbol_map() {
 }
 
 void update_value(const char* symbol, const char* value) {
-    for (int i = 0; i < symbol_cou    int i;
-    for (i = 0; i < symbol_count; i++) {
+    for (int i = 0; i < symbol_count; i++) {
         if (strcmp(symbol_list[i], symbol) == 0) {
             strcpy(signal_values[i], value);
             return;
@@ -226,16 +225,16 @@ int main(int argc, char* argv[]) {
     
     int i;
     for (i = 0; i < txn_count; i++) {
-e > last_time) last_time = end_time;
-        int transaction_cycles = (end_time - start_time) / 5000;
-        total_cycles_used += transaction_cycles;
-        if (strcmp(type, "READ") == 0) {
+        int start_time = transactions[i].start_time;
+        int end_time = transactions[i].end_time;
+        int wait_states = transactions[i].wait_states;
+        char* type = transactions[i].type;
         int req_id = transactions[i].req_id;
         int comp_id = transactions[i].comp_id;
         
-            if (wait_states == 0) {
-                read_no_wait++;
-            } else {
+        if (end_time > last_time) last_time = end_time;
+        int transaction_cycles = (end_time - start_time) / 5000;
+        total_cycles_used += transaction_cycles;
         
         // 統計 Requester
         int req_found = 0;
@@ -261,6 +260,10 @@ e > last_time) last_time = end_time;
             unique_completers[comp_count++] = comp_id;
         }
         
+        if (strcmp(type, "READ") == 0) {
+            if (wait_states == 0) {
+                read_no_wait++;
+            } else {
                 read_with_wait++;
             }
             read_cycles += transaction_cycles;
@@ -295,3 +298,4 @@ e > last_time) last_time = end_time;
     fprintf(fresult, "CPU Elapsed Time: %.2f ms\n", elapsed_ms);
     fclose(fresult);
     return 0;
+}
